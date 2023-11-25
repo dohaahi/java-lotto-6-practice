@@ -29,12 +29,19 @@ public class PurchaseAmountValidator {
     }
 
     public static void validatePurchaseAmount(final int amount) {
-        if (amount % LOTTO_PURCHASE_AMOUNT != 0) {
-            throw new IllegalPurchaseAmountException(INVALID_PURCHASE_AMOUNT_MESSAGE);
-        }
+        validateAmountUnit(amount);
+        validateAmountInRange(amount);
+    }
 
+    private static void validateAmountInRange(int amount) {
         if (amount < LOTTO_PURCHASE_AMOUNT || amount > MAX_AMOUNT) {
             throw new IllegalPurchaseAmountException();
+        }
+    }
+
+    private static void validateAmountUnit(int amount) {
+        if (amount % LOTTO_PURCHASE_AMOUNT != 0) {
+            throw new IllegalPurchaseAmountException(INVALID_PURCHASE_AMOUNT_MESSAGE);
         }
     }
 }

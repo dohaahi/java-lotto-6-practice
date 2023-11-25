@@ -1,7 +1,7 @@
 package lotto.view;
 
 import static lotto.validator.BonusNumberValidator.validateInputBonusNumber;
-import static lotto.validator.LottoNumbersValidator.validateInputLottoNumbers;
+import static lotto.validator.LottoValidator.validateInputLottoNumbers;
 import static lotto.validator.PurchaseAmountValidator.validateInputPurchaseAmount;
 import static lotto.view.InputConverter.mapToInt;
 

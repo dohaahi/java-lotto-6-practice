@@ -1,14 +1,15 @@
 package lotto.validator;
 
 import static lotto.validator.InputValidator.validateDomainIsEmpty;
+import static lotto.validator.LottoValidator.MAX_RANGE;
+import static lotto.validator.LottoValidator.MIN_RANGE;
 
 import java.util.List;
 import lotto.exception.IllegalBonusNumberException;
 
 public class BonusNumberValidator {
     private static final String DUPLICATE_NUMBER_MESSAGE = "보너스 숫자가 당첨번호와 중복되었습니다. 다시 입력해 주세요.";
-    private static final int MIN_RANGE = 1;
-    private static final int MAX_RANGE = 45;
+
 
     public static void validateInputBonusNumber(final String input) {
         validateDomainIsEmpty(input);
