@@ -23,4 +23,8 @@ public class DrawLotto {
     public DrawLottoDto toDrawLottoDto() {
         return new DrawLottoDto(numbers);
     }
+
+    public List<Integer> getNumbers() {
+        return numbers;
+    }
 }

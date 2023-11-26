@@ -14,6 +14,7 @@ public class InputView {
     private static final String PURCHASE_AMOUNT_INPUT_MESSAGE = "구입금액을 입력해 주세요.";
     private static final String LOTTO_NUMBERS_INPUT_MESSAGE = "\n당첨 번호를 입력해 주세요.";
     private static final String BONUS_NUMBER_INPUT_MESSAGE = "\n보너스 번호를 입력해 주세요.";
+    private static  List<Integer> numbers;
 
     public static PurchaseAmount readPurchaseAmount() {
         System.out.println(PURCHASE_AMOUNT_INPUT_MESSAGE);
@@ -30,7 +31,7 @@ public class InputView {
         String input = readLine();
         validateInputLottoNumbers(input);
 
-        List<Integer> numbers = InputConverter.mapToIntegerList(input);
+        numbers = InputConverter.mapToIntegerList(input);
 
         return new Lotto(numbers);
     }
@@ -40,9 +41,9 @@ public class InputView {
         String input = readLine();
         validateInputBonusNumber(input);
 
-        int number = InputConverter.mapToInt(input);
+        int bonusNumber = InputConverter.mapToInt(input);
 
-        return BonusNumber.from(number);
+        return BonusNumber.from(numbers, bonusNumber);
     }
 
 

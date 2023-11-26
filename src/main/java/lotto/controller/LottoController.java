@@ -1,7 +1,10 @@
 package lotto.controller;
 
+import static lotto.util.RetryHandler.retryIfFailure;
+
 import lotto.domain.BonusNumber;
 import lotto.domain.DrawLottos;
+import lotto.domain.DrawResult;
 import lotto.domain.Lotto;
 import lotto.domain.LottoMachine;
 import lotto.domain.PurchaseAmount;
@@ -13,14 +16,15 @@ public class LottoController {
 
     public void run() {
         // 1. 로또 구매
-        PurchaseAmount purchaseAmount = InputView.readPurchaseAmount();
-        Lotto lotto = InputView.readLottoNumbers();
-        BonusNumber bonusNumber = InputView.readBonusNumber();
+        PurchaseAmount purchaseAmount = retryIfFailure(InputView::readPurchaseAmount);
+        Lotto lotto = retryIfFailure(InputView::readLottoNumbers);
+        BonusNumber bonusNumber = retryIfFailure(InputView::readBonusNumber);
         DrawLottos drawLottos = machine.purchase(purchaseAmount);
         OutputView.printDrawLottos(drawLottos.toDrawLottosDto());
 
         // 2. 추첨
-        machine.draw(purchaseAmount, lotto);
+        DrawResult drawResult = machine.draw(lotto, drawLottos, bonusNumber);
+        OutputView.printDrawResult(drawResult.mapToDrawResultDto());
 
         // 3. 당첨 결과 출력
     }
