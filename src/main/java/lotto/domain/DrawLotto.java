@@ -5,22 +5,19 @@ import lotto.domain.dto.DrawLottoDto;
 import lotto.util.RandomNumberGenerator;
 
 public class DrawLotto {
-    private final List<Integer> numbers;
+    private List<Integer> numbers;
 
-    private DrawLotto() {
-        List<Integer> numbers = RandomNumberGenerator.generate()
-                .stream()
-                .sorted()
-                .toList();
+    private DrawLotto(final List<Integer> numbers) {
         this.numbers = numbers;
     }
 
     public static DrawLotto from() {
-        return new DrawLotto();
-    }
+        List<Integer> numbers = RandomNumberGenerator.generate()
+                .stream()
+                .sorted()
+                .toList();
 
-    public List<Integer> getNumbers() {
-        return List.copyOf(numbers);
+        return new DrawLotto(numbers);
     }
 
     public DrawLottoDto toDrawLottoDto() {

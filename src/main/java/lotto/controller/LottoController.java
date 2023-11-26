@@ -6,6 +6,7 @@ import lotto.domain.Lotto;
 import lotto.domain.LottoMachine;
 import lotto.domain.PurchaseAmount;
 import lotto.view.InputView;
+import lotto.view.OutputView;
 
 public class LottoController {
     private final LottoMachine machine = new LottoMachine();
@@ -16,6 +17,7 @@ public class LottoController {
         Lotto lotto = InputView.readLottoNumbers();
         BonusNumber bonusNumber = InputView.readBonusNumber();
         DrawLottos drawLottos = machine.purchase(purchaseAmount);
+        OutputView.printDrawLottos(drawLottos.toDrawLottosDto());
 
         // 2. 추첨
         machine.draw(purchaseAmount, lotto);

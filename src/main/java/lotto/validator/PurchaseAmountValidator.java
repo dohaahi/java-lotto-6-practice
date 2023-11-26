@@ -17,7 +17,7 @@ public class PurchaseAmountValidator {
     private static void validateInputInt(final String input) {
         try {
             Integer.parseInt(input);
-        } catch (IllegalPurchaseAmountException exception) {
+        } catch (IllegalArgumentException exception) {
             throw new IllegalPurchaseAmountException();
         }
     }
@@ -34,7 +34,7 @@ public class PurchaseAmountValidator {
     }
 
     private static void validatePurchaseAmountUnit(final int amount) {
-        if (amount % AMOUNT_UNIT == 0) {
+        if (amount % AMOUNT_UNIT != 0) {
             throw new IllegalPurchaseAmountException();
         }
     }

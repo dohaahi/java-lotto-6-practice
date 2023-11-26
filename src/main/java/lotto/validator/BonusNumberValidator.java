@@ -6,7 +6,6 @@ import static lotto.validator.LottoValidator.MIN_LOTTO_NUMBER;
 
 import java.util.List;
 import lotto.exception.IllegalBonusNumberException;
-import lotto.exception.IllegalPurchaseAmountException;
 
 public class BonusNumberValidator {
     public static void validateInputBonusNumber(final String input) {
@@ -17,7 +16,7 @@ public class BonusNumberValidator {
     private static void validateInputInt(final String input) {
         try {
             Integer.parseInt(input);
-        } catch (IllegalPurchaseAmountException exception) {
+        } catch (IllegalArgumentException exception) {
             throw new IllegalBonusNumberException();
         }
     }
@@ -35,8 +34,7 @@ public class BonusNumberValidator {
 
     private static void validateBonusNumberDuplicate(final List<Integer> numbers, final int bonusNumber) {
         boolean hasDuplicateNumber = numbers.stream()
-                .filter(number -> number == bonusNumber)
-                .count() > 0;
+                .anyMatch(number -> number == bonusNumber);
 
         if (hasDuplicateNumber) {
             throw new IllegalBonusNumberException();

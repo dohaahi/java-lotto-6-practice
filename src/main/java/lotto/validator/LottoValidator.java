@@ -29,7 +29,6 @@ public class LottoValidator {
 
     public static void validateLottoNumbers(final List<Integer> numbers) {
         validateLottoLength(numbers);
-        validateLottoNumberInRange(numbers);
         validateLottoNumbersDuplicate(numbers);
     }
 
@@ -37,14 +36,6 @@ public class LottoValidator {
     private static void validateLottoLength(final List<Integer> numbers) {
         if (numbers.size() != LOTTO_NUMBERS_LENGTH) {
             throw new IllegalLottoException(INVALID_LOTTO_LENGTH_MESSAGE);
-        }
-    }
-
-    private static void validateLottoNumberInRange(final List<Integer> numbers) {
-        for (Integer number : numbers) {
-            if (number < MIN_LOTTO_NUMBER || number > MAX_LOTTO_NUMBER) {
-                throw new IllegalLottoException();
-            }
         }
     }
 
