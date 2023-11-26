@@ -24,8 +24,8 @@ public class LottoController {
 
         // 2. 추첨
         DrawResult drawResult = machine.draw(lotto, drawLottos, bonusNumber);
-        OutputView.printDrawResult(drawResult.mapToDrawResultDto());
 
         // 3. 당첨 결과 출력
+        OutputView.printDrawResult(drawResult.mapToDrawResultDto(purchaseAmount));
     }
 }

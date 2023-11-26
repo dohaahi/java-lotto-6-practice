@@ -12,7 +12,9 @@ public class OutputView {
     private static final String WINNING_RESULT_MESSAGE = "\n당첨 통계\n---";
     private static final String RANK_HAS_BONUS_NUMBER_MESSAGE = "%d개 일치, 보너스 볼 일치 (%s원) - %d개\n";
     private static final String RANK__MESSAGE = "%d개 일치 (%s원) - %d개\n";
+    private static final String PROFIT__MESSAGE = "총 수익률은 %s입니다.";
     public static final String MONEY_FORMAT = "###,###";
+    public static final String PROFIT_FORMAT = "###,###.#%";
 
     public static void printDrawLottos(final DrawLottosDto drawLottos) {
         System.out.printf(PURCHASE_LOTTO_MESSAGE, drawLottos.lottos().size());
@@ -35,25 +37,33 @@ public class OutputView {
 
         drawResultDto.results()
                 .forEach(OutputView::printResultMatchRank);
+
+        System.out.printf(PROFIT__MESSAGE,
+                mapToProfitFormat(drawResultDto.profit()));
+    }
+
+    private static String mapToMoneyFormat(final int price) {
+        final DecimalFormat decimalFormat = new DecimalFormat(MONEY_FORMAT);
+        return decimalFormat.format(price);
+    }
+
+    private static String mapToProfitFormat(final double price) {
+        final DecimalFormat decimalFormat = new DecimalFormat(PROFIT_FORMAT);
+        return decimalFormat.format(price);
     }
 
     private static void printResultMatchRank(Rank rank, Integer value) {
         if (rank.hasBonusNumber()) {
             System.out.printf(RANK_HAS_BONUS_NUMBER_MESSAGE,
                     rank.getMatchingNumbers(),
-                    decimalFormat(rank.getPrizeAmount()),
+                    mapToMoneyFormat(rank.getPrizeAmount()),
                     value);
             return;
         }
 
         System.out.printf(RANK__MESSAGE,
                 rank.getMatchingNumbers(),
-                decimalFormat(rank.getPrizeAmount()),
+                mapToMoneyFormat(rank.getPrizeAmount()),
                 value);
-    }
-
-    private static String decimalFormat(final int price) {
-        final DecimalFormat decimalFormat = new DecimalFormat(MONEY_FORMAT);
-        return decimalFormat.format(price);
     }
 }
