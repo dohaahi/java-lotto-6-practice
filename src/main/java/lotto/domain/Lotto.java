@@ -20,5 +20,21 @@ public class Lotto {
         validateLotto(numbers);
     }
 
-    // TODO: 추가 기능 구현
+    public int matchNumberCount(final DrawLotto drawLotto) {
+        int matchNumberCount = 0;
+        List<Integer> drawLottoNumbers = drawLotto.getNumbers();
+
+        for (Integer number : numbers) {
+            matchNumberCount += (int) drawLottoNumbers.stream()
+                    .filter(drawNumber -> drawNumber.equals(number))
+                    .count();
+        }
+
+        return matchNumberCount;
+    }
+
+    public boolean isBonusNumberDuplicate(final int bonusNumber) {
+        return numbers.stream()
+                .anyMatch(number -> number == bonusNumber);
+    }
 }

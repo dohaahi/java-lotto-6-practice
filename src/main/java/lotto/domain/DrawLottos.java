@@ -2,6 +2,8 @@ package lotto.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import lotto.domain.dto.DrawLottoDto;
+import lotto.domain.dto.DrawLottosDto;
 
 public class DrawLottos {
     private final List<DrawLotto> lottos;
@@ -18,5 +20,17 @@ public class DrawLottos {
         }
 
         return new DrawLottos(lottoStorage);
+    }
+
+    public List<DrawLotto> getLottos() {
+        return List.copyOf(lottos);
+    }
+
+    public DrawLottosDto toDrawLottosDto() {
+        List<DrawLottoDto> lottoDtos = lottos.stream()
+                .map(DrawLotto::toDrawLottoDto)
+                .toList();
+
+        return new DrawLottosDto(lottoDtos);
     }
 }

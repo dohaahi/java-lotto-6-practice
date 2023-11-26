@@ -4,7 +4,7 @@ import static lotto.validator.InputValidator.validateDomainIsEmpty;
 import static lotto.validator.LottoValidator.MAX_RANGE;
 import static lotto.validator.LottoValidator.MIN_RANGE;
 
-import java.util.List;
+import lotto.domain.Lotto;
 import lotto.exception.IllegalBonusNumberException;
 
 public class BonusNumberValidator {
@@ -24,8 +24,9 @@ public class BonusNumberValidator {
         }
     }
 
-    public static void validateBonusNumber(final int number) {
-        validateNumberInRange(number);
+    public static void validateBonusNumber(final Lotto lotto, final int bonusNumber) {
+        validateNumberInRange(bonusNumber);
+        validateBonusNumberDuplicate(lotto, bonusNumber);
     }
 
     private static void validateNumberInRange(final int number) {
@@ -34,12 +35,10 @@ public class BonusNumberValidator {
         }
     }
 
-    public static void validateBonusNumberDuplicate(final List<Integer> numbers, final int bonusNumber) {
-        long duplicateNumberCount = numbers.stream()
-                .filter(number -> number == bonusNumber)
-                .count();
+    public static void validateBonusNumberDuplicate(final Lotto lotto, final int bonusNumber) {
+        boolean isBonusNumberDuplicate = lotto.isBonusNumberDuplicate(bonusNumber);
 
-        if (duplicateNumberCount > 0) {
+        if (isBonusNumberDuplicate) {
             throw new IllegalBonusNumberException(DUPLICATE_NUMBER_MESSAGE);
         }
     }

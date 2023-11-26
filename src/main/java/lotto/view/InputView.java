@@ -39,7 +39,7 @@ public class InputView {
         String input = readLine();
         validateInputBonusNumber(input);
 
-        return BonusNumber.from(mapToInt(input));
+        return BonusNumber.from(readLottoNumbers(),mapToInt(input));
     }
 
     private static String readLine() {
