@@ -3,10 +3,10 @@ package lotto.domain;
 import static lotto.validator.PurchaseAmountValidator.validatePurchaseAmount;
 
 public class PurchaseAmount {
-    public static final int LOTTO_PURCHASE_AMOUNT = 1_000;
+    public static final int AMOUNT_UNIT = 1_000;
     private final int amount;
 
-    private PurchaseAmount(int amount) {
+    public PurchaseAmount(int amount) {
         this.amount = amount;
     }
 
@@ -17,6 +17,6 @@ public class PurchaseAmount {
     }
 
     public int getAmount() {
-        return amount;
+        return amount/AMOUNT_UNIT;
     }
 }

@@ -1,47 +1,41 @@
 package lotto.validator;
 
-import static lotto.domain.PurchaseAmount.LOTTO_PURCHASE_AMOUNT;
+import static lotto.domain.PurchaseAmount.AMOUNT_UNIT;
+import static lotto.validator.InputValidator.validateValueIsEmpty;
 
-import lotto.exception.IllegalLottoNumbersException;
 import lotto.exception.IllegalPurchaseAmountException;
 
 public class PurchaseAmountValidator {
-    private static final String INVALID_PURCHASE_AMOUNT_MESSAGE = "구입 금액은 1,000원 단위로 입력해야 합니다. 다시 입력해 주세요.";
-    public static final int MAX_AMOUNT = 100_000;
+    private static final int MIN_AMOUNT = 1_000;
+    private static final int MAX_AMOUNT = 100_000;
 
     public static void validateInputPurchaseAmount(final String input) {
-        validateDomainIsEmpty(input);
-        validateInputIntPurchaseAmount(input);
+        validateValueIsEmpty(input);
+        validateInputInt(input);
     }
 
-    private static void validateDomainIsEmpty(final String input) {
-        if (input.isBlank()) {
-            throw new IllegalLottoNumbersException();
-        }
-    }
-
-    private static void validateInputIntPurchaseAmount(final String input) {
+    private static void validateInputInt(final String input) {
         try {
             Integer.parseInt(input);
-        } catch (IllegalArgumentException exception) {
+        } catch (IllegalPurchaseAmountException exception) {
             throw new IllegalPurchaseAmountException();
         }
     }
 
     public static void validatePurchaseAmount(final int amount) {
-        validateAmountUnit(amount);
         validateAmountInRange(amount);
+        validatePurchaseAmountUnit(amount);
     }
 
-    private static void validateAmountInRange(int amount) {
-        if (amount < LOTTO_PURCHASE_AMOUNT || amount > MAX_AMOUNT) {
+    private static void validateAmountInRange(final int amount) {
+        if (amount < MIN_AMOUNT || amount > MAX_AMOUNT) {
             throw new IllegalPurchaseAmountException();
         }
     }
 
-    private static void validateAmountUnit(int amount) {
-        if (amount % LOTTO_PURCHASE_AMOUNT != 0) {
-            throw new IllegalPurchaseAmountException(INVALID_PURCHASE_AMOUNT_MESSAGE);
+    private static void validatePurchaseAmountUnit(final int amount) {
+        if (amount % AMOUNT_UNIT == 0) {
+            throw new IllegalPurchaseAmountException();
         }
     }
 }

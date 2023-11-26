@@ -1,45 +1,45 @@
 package lotto.validator;
 
-import static lotto.validator.InputValidator.validateDomainIsEmpty;
-import static lotto.validator.LottoValidator.MAX_RANGE;
-import static lotto.validator.LottoValidator.MIN_RANGE;
+import static lotto.validator.InputValidator.validateValueIsEmpty;
+import static lotto.validator.LottoValidator.MAX_LOTTO_NUMBER;
+import static lotto.validator.LottoValidator.MIN_LOTTO_NUMBER;
 
-import lotto.domain.Lotto;
+import java.util.List;
 import lotto.exception.IllegalBonusNumberException;
+import lotto.exception.IllegalPurchaseAmountException;
 
 public class BonusNumberValidator {
-    private static final String DUPLICATE_NUMBER_MESSAGE = "보너스 숫자가 당첨번호와 중복되었습니다. 다시 입력해 주세요.";
-
-
     public static void validateInputBonusNumber(final String input) {
-        validateDomainIsEmpty(input);
-        validateInputIntBonusNumber(input);
+        validateValueIsEmpty(input);
+        validateInputInt(input);
     }
 
-    private static void validateInputIntBonusNumber(final String input) {
+    private static void validateInputInt(final String input) {
         try {
             Integer.parseInt(input);
-        } catch (IllegalArgumentException exception) {
+        } catch (IllegalPurchaseAmountException exception) {
             throw new IllegalBonusNumberException();
         }
     }
 
-    public static void validateBonusNumber(final Lotto lotto, final int bonusNumber) {
-        validateNumberInRange(bonusNumber);
-        validateBonusNumberDuplicate(lotto, bonusNumber);
+    public static void validateBonusNumber(final List<Integer> numbers, final int bonusNumber) {
+        validateBonusNumberInRange(bonusNumber);
+        validateBonusNumberDuplicate(numbers, bonusNumber);
     }
 
-    private static void validateNumberInRange(final int number) {
-        if (number < MIN_RANGE || number > MAX_RANGE) {
+    private static void validateBonusNumberInRange(final int bonusNumber) {
+        if (bonusNumber < MIN_LOTTO_NUMBER || bonusNumber > MAX_LOTTO_NUMBER) {
             throw new IllegalBonusNumberException();
         }
     }
 
-    public static void validateBonusNumberDuplicate(final Lotto lotto, final int bonusNumber) {
-        boolean isBonusNumberDuplicate = lotto.isBonusNumberDuplicate(bonusNumber);
+    private static void validateBonusNumberDuplicate(final List<Integer> numbers, final int bonusNumber) {
+        boolean hasDuplicateNumber = numbers.stream()
+                .filter(number -> number == bonusNumber)
+                .count() > 0;
 
-        if (isBonusNumberDuplicate) {
-            throw new IllegalBonusNumberException(DUPLICATE_NUMBER_MESSAGE);
+        if (hasDuplicateNumber) {
+            throw new IllegalBonusNumberException();
         }
     }
 }

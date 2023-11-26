@@ -1,60 +1,60 @@
 package lotto.validator;
 
-import static lotto.validator.InputValidator.validateDomainIsEmpty;
+import static lotto.validator.InputValidator.validateValueIsEmpty;
 
 import java.util.List;
 import java.util.regex.Pattern;
-import lotto.exception.IllegalLottoNumbersException;
+import lotto.exception.IllegalLottoException;
 
 public class LottoValidator {
-    private static final String INVALID_LOTTO_NUMBER_COUNT_MESSAGE = "당첨 번호의 개수 유효하지 않습니다. 다시 입력해 주세요.";
-    private static final String DUPLICATE_LOTTO_NUMBER_COUNT_MESSAGE = "당첨 번호가 중복 입력됐습니다. 다시 입력해 주세요.";
-    private static final String LOTTO_NUMBERS_REGEX = "^[0-9]+(,[0-9]+)*$";
-    public static final int MIN_RANGE = 1;
-    public static final int MAX_RANGE = 45;
-    public static final String DOMAIN_DELIMITER = ",";
-    public static final int LOTTO_NUMBER_COUNT = 6;
+    private static final String DELIMITER = ",";
+    private static final int LOTTO_NUMBERS_LENGTH = 6;
+    public static final int MIN_LOTTO_NUMBER = 1;
+    public static final int MAX_LOTTO_NUMBER = 45;
+    private static final String LOTTO_NUMBERS_REGEX = "^[\\d]+(" + DELIMITER + "[\\d]+)*$";
+    private static final String INVALID_LOTTO_LENGTH_MESSAGE = "당첨 숫자는 " + LOTTO_NUMBERS_LENGTH + "자리 입니다. 다시 입력해 주세요.";
+    private static final String INVALID_LOTTO_NUMBERS_DUPLICATE_MESSAGE = "당첨 숫자는 중복되는 값을 입력할 수 없습니다. 다시 입력해 주세요.";
 
     public static void validateInputLottoNumbers(final String input) {
-        validateDomainIsEmpty(input);
+        validateValueIsEmpty(input);
         validateLottoNumbersPatternInput(input);
     }
 
-    public static void validateLottoNumbersPatternInput(final String input) {
+    private static void validateLottoNumbersPatternInput(final String input) {
         if (!Pattern.matches(LOTTO_NUMBERS_REGEX, input)) {
-            throw new IllegalLottoNumbersException();
+            throw new IllegalLottoException();
         }
     }
 
-    public static void validateLotto(final List<Integer> numbers) {
-        validateLottoNumbersCount(numbers);
-        validateLottoInRange(numbers);
+
+    public static void validateLottoNumbers(final List<Integer> numbers) {
+        validateLottoLength(numbers);
+        validateLottoNumberInRange(numbers);
         validateLottoNumbersDuplicate(numbers);
     }
 
-    private static void validateLottoNumbersCount(final List<Integer> numbers) {
-        long numberSize = numbers.size();
 
-        if (numberSize != LOTTO_NUMBER_COUNT) {
-            throw new IllegalLottoNumbersException(INVALID_LOTTO_NUMBER_COUNT_MESSAGE);
+    private static void validateLottoLength(final List<Integer> numbers) {
+        if (numbers.size() != LOTTO_NUMBERS_LENGTH) {
+            throw new IllegalLottoException(INVALID_LOTTO_LENGTH_MESSAGE);
         }
     }
 
-    private static void validateLottoInRange(final List<Integer> numbers) {
-        numbers.forEach(number -> {
-            if (number < MIN_RANGE || number > MAX_RANGE) {
-                throw new IllegalLottoNumbersException();
+    private static void validateLottoNumberInRange(final List<Integer> numbers) {
+        for (Integer number : numbers) {
+            if (number < MIN_LOTTO_NUMBER || number > MAX_LOTTO_NUMBER) {
+                throw new IllegalLottoException();
             }
-        });
+        }
     }
 
     private static void validateLottoNumbersDuplicate(final List<Integer> numbers) {
-        final long count = numbers.stream()
+        long uniqueNumberCount = numbers.stream()
                 .distinct()
                 .count();
 
-        if (count != numbers.size()) {
-            throw new IllegalLottoNumbersException(DUPLICATE_LOTTO_NUMBER_COUNT_MESSAGE);
+        if (numbers.size() != uniqueNumberCount) {
+            throw new IllegalLottoException(INVALID_LOTTO_NUMBERS_DUPLICATE_MESSAGE);
         }
     }
 }
